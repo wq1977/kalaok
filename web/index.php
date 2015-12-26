@@ -3,71 +3,40 @@
 <html> 
     <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1"> 
-    <title>Page Title</title> 
-    <link rel="stylesheet"  href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />  
-    <link rel="stylesheet" href="../_assets/css/jqm-docs.css"/>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
-    <script type="text/javascript" src="docs/docs.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Popup - jQuery Mobile Demos</title>
+    <link rel="stylesheet" href="./css/themes/default/jquery.mobile-1.4.5.min.css">
+    <script src="./js/jquery.js"></script>
+    <script src="./_assets/js/index.js"></script>
+    <script src="./js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="./js.cookie.js"></script>
+    </head>
 <body> 
 
-<!-- Start of first page -->
-<div data-role="page" id="foo">
+<div data-role="page">
 
-    <div data-role="header">
-        <h1>Foo</h1>
-    </div><!-- /header -->
+    <div role="content">
 
-    <div data-role="content">   
-        <h2>Foo</h2>
-        <p>I'm first in the source order so I'm shown as the page.</p>      
-        <p>View internal page called <a href="#bar">bar</a></p> 
-        <p>View internal page called <a href="#baz" data-rel="dialog" data-transition="pop">baz</a> as a dialog.</p>
-    </div><!-- /content -->
-    
-    <div data-role="footer">
-        <h4>Page Footer</h4>
-    </div><!-- /footer -->
-</div><!-- /page -->
-
-
-<!-- Start of second page -->
-<div data-role="page" id="bar">
-
-    <div data-role="header">
-        <h1>Bar</h1>
-    </div><!-- /header -->
-
-    <div data-role="content">   
-        <h2>Bar</h2>
-        <p>I'm the bar page.</p>        
-        <p><a href="#foo" data-direction="reverse">Back to foo</a></p>  
-        <p>Or view an <a href="link-formats.html">external page</a> from here!</p>
-    </div><!-- /content -->
-    
-    <div data-role="footer">
-        <h4>Page Footer</h4>
-    </div><!-- /footer -->
-</div><!-- /page -->
-
-
-<!-- Start of second page -->
-<div data-role="page" id="baz">
-
-    <div data-role="header">
-        <h1>Baz</h1>
-    </div><!-- /header -->
-
-    <div data-role="content">   
-        <h2>Baz</h2>
-        <p>I'm the baz page, viewed as a dialog.</p>        
-        <p><a href="#foo" data-rel="back">Back to foo</a></p>   
-    </div><!-- /content -->
-    
-    <div data-role="footer">
-        <h4>Page Footer</h4>
-    </div><!-- /footer -->
+            <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all" data-history="false">
+                <form>
+                    <div style="padding:10px 20px;">
+                        <h3>Please sign in</h3>
+                        <label for="un" class="ui-hidden-accessible">Username:</label>
+                        <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a">
+                        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Sign in</button>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript" language="JavaScript">
+                $(":jqmData(role='page'):last").on("pageshow", function(event) {
+                    if (typeof Cookies.get("name") !== 'undefined'){
+                    }
+                    else{
+                        $("#popupLogin", $(this)).popup("open");
+                    }
+                });
+            </script>
+    </div>
 </div><!-- /page -->
 
 </body>
