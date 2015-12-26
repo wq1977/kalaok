@@ -1,4 +1,9 @@
 import wx
+from classes.KalaModel import KalaModel 
+from classes.Model import Model
+
+app=wx.App(False)
+app.model = KalaModel()
 
 class MicIndicator(wx.Panel):
     def __init__(self,parent):
@@ -6,6 +11,12 @@ class MicIndicator(wx.Panel):
                          style=wx.NO_FULL_REPAINT_ON_RESIZE)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.SetSize((50,50))
+        Model.regist(self.whenMicModel,"mic")
+    
+    def whenMicModel(self):
+        print "Mic Event!!"
+        self.Refresh()
+
     def OnPaint(self, evt):
         pdc = wx.PaintDC(self)
         try:
@@ -13,7 +24,10 @@ class MicIndicator(wx.Panel):
         except:
             dc = pdc
         rect = self.GetRect()
-        r, g, b = (0,255,0)
+        if app.model.micReady:
+            r, g, b = (0,255,0)
+        else:
+            r, g, b = (255,255,0)
         penclr   = wx.Colour(r, g, b, wx.ALPHA_OPAQUE)
         brushclr = wx.Colour(r, g, b, 128)   # half transparent
         dc.SetPen(wx.Pen(penclr))
@@ -62,7 +76,9 @@ class MyFrame(wx.Frame):
         box.Add(button, 0, wx.EXPAND)
         panel.SetSizer(box)
 
-
+        self.modelTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, app.model.poll1s, self.modelTimer)
+        self.modelTimer.Start(1000)
 
     def OnCloseMe(self, event):
         self.Close(True)
@@ -70,7 +86,6 @@ class MyFrame(wx.Frame):
     def OnCloseWindow(self, event):
         self.Destroy()
 
-app=wx.App(False)
 win = MyFrame(None, -1, "This is a wx.Frame", size=(350, 200),
                   style = wx.DEFAULT_FRAME_STYLE)
 win.Show(True)

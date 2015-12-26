@@ -5,7 +5,7 @@ class Model:
         Model.events[event]=[]
 
     @staticmethod
-    def regist(self, object_method, event):
+    def regist(object_method, event):
         Model.events[event].append(object_method)
 
     def broadcast(self,event):
