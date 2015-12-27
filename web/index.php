@@ -1,15 +1,46 @@
+<?php
+include_once("db.php");
+
+function status($status){
+    if ($status == 0) return "等待下载";
+    if ($status == 1) return "正在下载";
+    if ($status == 2) return "等待播放";
+    if ($status == 3) return "正在播放";
+    if ($status == 4) return "播放完毕";
+}
+
+$ret=mysql_query("select * from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`which` = `songs`.id");
+?>
+
 <?php include("top.php"); ?>
 
-<ul data-role="listview" data-split-icon="gear" data-split-theme="a" data-inset="true">
-    <li><a href="#"><img src="../_assets/img/album-bb.jpg"><h2>Broken Bells</h2><p>Broken Bells</p></a><a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a></li>
-    <li><a href="#"><img src="../_assets/img/album-hc.jpg"><h2>Warning</h2><p>Hot Chip</p></a><a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a></li>
-    <li><a href="#"><img src="../_assets/img/album-p.jpg"><h2>Wolfgang Amadeus Phoenix</h2><p>Phoenix</p></a><a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a></li>
+<ul data-role="listview" data-split-icon="gear" id="searchlist" data-split-theme="a" data-inset="true">
+
+<?php 
+    while ($array = mysql_fetch_array($ret)) {         
+        $status=status($array["status"]);
+        echo ("<li><a href=\"#\" data-id=\"" .$array["which"]. "\"><img src=\"". $array["imageurl"] ."\"><h2>" .$array["name"]. "</h2><p>" . $array["artist"] . "</p><p class=\"ui-li-aside\"><strong>$array[who]</strong> $status</p></a></li> ");
+    }
+?> 
+
 </ul>
-<div data-role="popup" id="purchase" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-    <h3>Purchase Album?</h3>
-<p>Your download will begin immediately on your mobile device when you purchase.</p>
-    <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Buy: $10.99</a>
-    <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
+
+<div id="PopupPH">
+      <!-- placeholder for popup -->
 </div>
+
+<script>
+
+    var currentId = 0;
+    
+    $('#page').on('pageinit', function(){
+        $('#searchlist li a').click(function(e){
+            e.preventDefault();
+            currentId = $(this).attr("data-id");
+            $("#PopupPH").load("./order.php?songid="+currentId);
+        });
+    });
+
+    </script>
 
 <?php include("bottom.php"); ?>
