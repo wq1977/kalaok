@@ -11,7 +11,7 @@ function status($status){
     if ($status == 3) return "正在播放";
     if ($status == 4) return "播放完毕";
 }
-$ret=mysql_query("select * from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`which` = `songs`.id");
+$ret=mysql_query("select `orders`.id as id, `orders`.status, `orders`.who,songs.imageurl,songs.name,songs.artist from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`which` = `songs`.id order by orders.when");
 ?>
 
 <ul data-role="listview" data-split-icon="gear" id="searchlist" data-split-theme="a" data-inset="true">
@@ -19,7 +19,7 @@ $ret=mysql_query("select * from `orders`,`songs` where `orders`.`status` != 2 an
 <?php
     while ($array = mysql_fetch_array($ret)) {
         $status=status($array["status"]);
-        echo ("<li><a href=\"#\" data-id=\"" .$array["which"]. "\"><img src=\"". $array["imageurl"] ."\"><h2>" .$array["name"]. "</h2><p>" . $array["artist"] . " <strong>$array[who]</strong> $status</p></a><a href=\"\">提前</a></li> ");
+        echo ("<li><a href=\"raise.php?orderid=$array[id]\" data-rel=\"dialog\" data-transition=\"pop\"><img src=\"". $array["imageurl"] ."\"><h2>" .$array["name"]. "</h2><p>" . $array["artist"] . " <strong>$array[who]</strong> $status</p></a><a href=\"cancel.php?orderid=$array[id]\" data-rel=\"dialog\" data-transition=\"pop\">取消</a></li> ");
     }
 ?>
 

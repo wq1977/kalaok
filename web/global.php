@@ -17,4 +17,7 @@
             $("#popupLogin", $(this)).popup("open");
         }
     });
+    $(document).on("pagehide", "div[data-role=page]", function(event){
+        $(event.target).remove();
+    });
 </script>
