@@ -33,7 +33,7 @@
     </div>
     
 <div data-role="footer" data-theme="b" data-position="fixed" style="overflow:hidden;"><div data-role="navbar" data-iconpos="top"><ul>
-<li><a href="index.php" <?php if (stripos($_SERVER["SCRIPT_NAME"],"playing.php")!==FALSE) echo "class=\"ui-btn-active\""; ?> data-icon="grid" >正在播放</a></li>
+<li><a href="index.php" <?php if (stripos($_SERVER["SCRIPT_NAME"],"index.php")!==FALSE) echo "class=\"ui-btn-active\""; ?> data-icon="grid" >正在播放</a></li>
 <li><a href="#popupOrder" <?php if (stripos($_SERVER["SCRIPT_NAME"],"search.php")!==FALSE) echo "class=\"ui-btn-active\""; ?>data-rel="popup" data-position-to="window" data-transition="pop" data-icon="star">在线点歌</a></li>
 <li><a href="recently.php" <?php if (stripos($_SERVER["SCRIPT_NAME"],"recently.php")!==FALSE) echo "class=\"ui-btn-active\""; ?> data-icon="gear">最近演唱</a></li></ul></div><!-- /navbar --></div>
 
