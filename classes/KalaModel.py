@@ -16,8 +16,12 @@ class KalaModel(Model):
         
     def poll1s(self,sc):
         if self.micProcess != None:
-            self.micProcess.poll()
-            if self.micProcess != None:
+            ret=self.micProcess.poll()
+            if ret != None:
                 self.micReady=False
                 self.broadcast("mic")
                 self.micProcess = None
+    def cleanup(self):
+        if self.micProcess != None:
+            print "terminate mic ..."
+            self.micProcess.terminate()

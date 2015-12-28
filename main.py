@@ -1,6 +1,8 @@
 import wx
 from classes.KalaModel import KalaModel 
 from classes.Model import Model
+import qrcode
+
 
 app=wx.App(False)
 app.model = KalaModel()
@@ -48,6 +50,24 @@ class TopPanel(wx.Panel):
         box.Add(MicIndicator(self),0,wx.CENTER)
         self.SetSizer(box)
 
+def PilImageToWxImage( myPilImage ):
+    myWxImage = wx.EmptyImage( myPilImage.size[0], myPilImage.size[1] )
+    myWxImage.SetData( myPilImage.convert( 'RGB' ).tostring() )
+    return myWxImage
+
+import socket
+import fcntl
+import struct
+def getLocalUrl():
+    ifname="wlan0"
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    ip= socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+    return "http://%s/kalaok/kalaok/web/" % (ip)
+
 class MyFrame(wx.Frame):
     def __init__(
             self, parent, ID, title, pos=wx.DefaultPosition,
@@ -73,7 +93,15 @@ class MyFrame(wx.Frame):
 
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(top, 0, wx.EXPAND)
-        box.Add(button, 0, wx.EXPAND)
+        box.Add((0, 0), 1)
+
+        img = qrcode.make(getLocalUrl())
+        wximg=PilImageToWxImage(img) 
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add((0,0),1)
+        hbox.Add(button,0,wx.EXPAND)
+        hbox.Add(wx.StaticBitmap(panel, -1, wx.BitmapFromImage(wximg)))
+        box.Add(hbox, 0, wx.EXPAND)
         panel.SetSizer(box)
 
         self.modelTimer = wx.Timer(self)
@@ -84,6 +112,8 @@ class MyFrame(wx.Frame):
         self.Close(True)
 
     def OnCloseWindow(self, event):
+        app.model.cleanup()
+        print "sys done!"
         self.Destroy()
 
 win = MyFrame(None, -1, "This is a wx.Frame", size=(350, 200),
