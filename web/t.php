@@ -15,5 +15,6 @@
 <div data-role="page">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>欢迎你<span id="submittername"><?php if(isset($_COOKIE["name"])) echo "：$_COOKIE[name]"; ?></span></h1>
+        <a href="#" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear">切歌</a>
     </div><!-- /header -->
     <div role="content">
