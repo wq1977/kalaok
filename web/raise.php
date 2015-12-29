@@ -1,8 +1,6 @@
 <?php
 include_once("db.php");
-$sql=mysql_query("select * from `songs` where id=$_GET[songid] LIMIT 1;");
-$array=mysql_fetch_array($sql);
-mysql_query("insert into `orders` values(DEFAULT,\"$_COOKIE[name]\",Now(),$_GET[songid],DEFAULT); ");
+mysql_query("update  `orders` join (select min(`when`) as v from orders where status != 2) value set orders.when = value.v-1 where orders.id=$_GET[orderid];");
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,12 +21,8 @@ mysql_query("insert into `orders` values(DEFAULT,\"$_COOKIE[name]\",Now(),$_GET[
     <div data-role="page" id="dialog-success" data-dom-cache="true"><!-- dialog-->
 
         <div data-role="header" data-theme="b">
-            <h1>点歌成功</h1>
+            <h1>歌曲已提前</h1>
         </div><!-- /header -->
-
-        <div class="ui-content" role="main">
-            <p><?php echo "$array[name] $array[artist]"; ?>  已添加到播放列表！</p>
-        </div>
 
         <a href="/" class="ui-btn ui-corner-all ui-shadow ui-btn-b" data-rel="back">返回</a>
 
