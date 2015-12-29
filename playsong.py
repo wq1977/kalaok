@@ -6,6 +6,7 @@ import urllib
 import json,os,time
 import shlex,subprocess
 import atexit
+import math
 mvproc=None
 def savecounter():
     global mvproc
@@ -29,8 +30,16 @@ def playSong(song):
     c.execute("set names utf8")
     c.execute("update orders set `status`=1, `progress`=0 where id=%d" % (song[0]))
     c.close()
+    c=db.cursor()
+    c.execute("set names utf8")
+    vol=0.5
+    if c.execute("select operation from operations where operation like 'volume%' order by `when` desc")>0:
+        ret=c.fetchone()
+        vol=float(ret[0].split("|")[1])/100
 
-    args = shlex.split("omxplayer --win '%s' %s" % (sys.argv[1],dest))
+    volp=math.log(vol)/math.log(10) * 2000
+    
+    args = shlex.split("omxplayer --vol %f --win '%s' %s" % (volp,sys.argv[1],dest))
     mvproc = subprocess.Popen(args)
     while True:
         r1=mvproc.poll()

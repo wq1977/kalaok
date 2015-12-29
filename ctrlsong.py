@@ -26,6 +26,10 @@ def ctrlSong(opt):
         args = "/home/pi/KalaOK/dbuscontrol.sh selectaudio 0"
     elif opt=="cancel":
         args = "killall omxplayer.bin"
+    elif opt.startswith("volume"):
+        volumn_music=int(opt.split("|")[1])
+        volumn_mic=int(opt.split("|")[2])
+        args = "/home/pi/KalaOK/dbuscontrol.sh volume %f" % (float(volumn_music)/100)
     if args != None:
         print args
         os.system(args)
