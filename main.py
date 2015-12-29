@@ -5,7 +5,8 @@ import qrcode
 
 
 app=wx.App(False)
-app.model = KalaModel()
+size=wx.DisplaySize()
+app.model = KalaModel("0 0 %d %d" % (size[0],size[1]))
 
 class MicIndicator(wx.Panel):
     def __init__(self,parent):

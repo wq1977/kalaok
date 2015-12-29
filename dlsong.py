@@ -49,6 +49,7 @@ def downloadSong(song):
     c.execute("update orders set `status`=3, `progress`=0 where id=%d" % (song[0]))
     c.close()
 
+    os.system("rm -f /tmp/*.mp4 /tmp/*.m4a /tmp/*.st")
     GLOBAL_TYPE_PARAM = "d7bd83313b5b444"
     GLOBAL_TIANLAI_KEY = "6ae993829ca5410e888f5e97b73ee4a810bb242149fd46ada5777edf587b4225"
     request = base64.urlsafe_b64encode("{\"type\":1,\"songId\":\""+str(song[3])+"\",\"common\":{\"clientversion\":\"3.3.9\",\"model\":\"sdk\",\"imei\":\"000000000000000\",\"userid\":0,\"resolution\":\"1196X720\",\"apiversion\":\"3.2.0\",\"product\":\"KALAOK\",\"clienttype\":\"Android\",\"nettype\":\"epc.tmobile.com\",\"updatechannel\":\"37\",\"login\":0,\"language\":1,\"imsi\":\"89014103211118510720\",\"systemversion\":\"17\",\"channel\":\"YYH\"},\"primeId\":\"20727\"}");
