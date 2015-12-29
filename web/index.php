@@ -3,10 +3,10 @@ include_once("db.php");
 
 function status($status){
     if ($status == 0) return "等待下载";
-    if ($status == 1) return "正在下载";
-    if ($status == 2) return "等待播放";
-    if ($status == 3) return "正在播放";
-    if ($status == 4) return "播放完毕";
+    if ($status == 3) return "正在下载";
+    if ($status == 4) return "等待播放";
+    if ($status == 1) return "正在播放";
+    if ($status == 2) return "播放完毕";
 }
 
 $ret=mysql_query("select * from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`which` = `songs`.id");
