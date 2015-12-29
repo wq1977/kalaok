@@ -11,7 +11,7 @@ function status($status){
     if ($status == 1) return "正在播放";
     if ($status == 2) return "播放完毕";
 }
-$ret=mysql_query("select `orders`.id as id, `orders`.status, `orders`.who,songs.imageurl,songs.name,songs.artist from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`which` = `songs`.id order by orders.when");
+$ret=mysql_query("select `orders`.id as id, `orders`.status, `orders`.who,songs.imageurl,songs.name,songs.artist from `orders`,`songs` where `orders`.`status` != 2 and `orders`.`status` != 10 and `orders`.`which` = `songs`.id order by orders.when");
 ?>
 
 <ul data-role="listview" data-split-icon="gear" id="searchlist" data-split-theme="a" data-inset="true">
