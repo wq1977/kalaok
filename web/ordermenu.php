@@ -4,8 +4,8 @@
 <form><div style="padding:0px 20px;"><input type="search" name="artist" id="search" value="<?php echo $value; ?>" placeholder="周杰伦"></div></form>
 
 <?php
-if (isset($_GET["artist"]) && strlen($_GET["artist"])>0){
 include_once("db.php");
+if (isset($_GET["artist"]) && strlen($_GET["artist"])>0){
 
 $GLOBAL_TYPE_PARAM = "d7bd83313b5b444";
 $GLOBAL_TIANLAI_KEY = "6ae993829ca5410e888f5e97b73ee4a810bb242149fd46ada5777edf587b4225";
@@ -30,6 +30,19 @@ $html = file_get_contents($url);
 
 <?php
 
+}
+else{
+    $sql="select * from songs,(select distinct (which) from orders order by `when` desc limit 10) as t1 where songs.id=t1.`which`";
+    $ret=mysql_query($sql);
+?>
+<ul data-role="listview" data-split-icon="gear" id="searchlist" data-split-theme="a" data-inset="true">
+<?php
+    while ($array = mysql_fetch_array($ret)) {
+        echo ("<li><a href=\"order.php?songid=" .$array["id"]. "\" data-rel=\"dialog\" data-transition=\"pop\"><img src=\"". $array["imageurl"] ."\"><h2>" .$array["name"]. "</h2><p>" . $array["artist"] . "</p></a></li> ");
+    }            
+?>
+</ul>
+<?php
 }
 ?>
 

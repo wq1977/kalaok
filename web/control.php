@@ -3,9 +3,9 @@
 <div class="ui-body-a ui-body">
     <div data-role="navbar">
         <ul>
-            <li><a href="operate.php?opt=cancel" data-rel="dialog" data-transition="popup"  data-icon="grid">切歌</a></li>
-            <li><a href="operate.php?opt=mv" data-rel="dialog" data-transition="popup"  data-icon="star">原唱</a></li>
-            <li><a href="operate.php?opt=mtv" data-rel="dialog" data-transition="popup"  data-icon="gear">伴唱</a></li>
+            <li><a href="operate.php?opt=cancel" data-rel="dialog" data-transition="pop"  data-icon="grid">切歌</a></li>
+            <li><a href="operate.php?opt=mv" data-rel="dialog" data-transition="pop"  data-icon="star">原唱</a></li>
+            <li><a href="operate.php?opt=mtv" data-rel="dialog" data-transition="pop"  data-icon="gear">伴唱</a></li>
         </ul>
     </div><!-- /navbar -->
 </div><!-- /container -->
