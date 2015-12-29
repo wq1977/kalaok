@@ -2,7 +2,7 @@
 include_once("db.php");
 $sql=mysql_query("select * from `songs` where id=$_GET[songid] LIMIT 1;");
 $array=mysql_fetch_array($sql);
-mysql_query("insert into `orders` values(DEFAULT,\"$_COOKIE[name]\",Now(),$_GET[songid],DEFAULT); ");
+mysql_query("insert into `orders` values(DEFAULT,\"$_COOKIE[name]\",Now(),$_GET[songid],DEFAULT,0); ");
 ?>
 <!DOCTYPE html>
 <html>
