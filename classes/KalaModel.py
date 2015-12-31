@@ -1,11 +1,13 @@
 from Model import Model
 import shlex,subprocess
+import psutil
 
 class KalaModel(Model):
     def __init__(self,win):
         self.initEvent("mic")
+        self.initEvent("cpuusage")
         self.micReady=True
-        args = shlex.split("alsaloop -C hw:1,0 -P hw:0,1 -t 1000")
+        args = shlex.split("alsaloop -C hw:1,0 -P hw:0,1 -t 10000")
         self.micProcess = subprocess.Popen(args)
         args = shlex.split("python /home/pi/KalaOK/dlsong.py")
         self.dsProcess = subprocess.Popen(args)
@@ -13,8 +15,11 @@ class KalaModel(Model):
         self.psProcess = subprocess.Popen(args)
         args = shlex.split("python /home/pi/KalaOK/ctrlsong.py")
         self.csProcess = subprocess.Popen(args)
+        self.cpuUsage=0
         
     def poll1s(self,sc):
+        self.cpuUsage=psutil.cpu_percent(interval=None)
+        self.broadcast("cpuusage")
         if self.micProcess != None:
             ret=self.micProcess.poll()
             if ret != None:
