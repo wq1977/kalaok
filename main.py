@@ -94,23 +94,22 @@ class MyFrame(wx.Frame):
         panel.SetConstraints(lc)
         #panel.SetBackgroundColour(wx.BLUE)
 
-        top = TopPanel(panel)
+        #top = TopPanel(panel)
 
         button = wx.Button(panel, 1003, getLocalUrl())
         self.Bind(wx.EVT_BUTTON, self.OnCloseMe, button)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
         box = wx.BoxSizer(wx.VERTICAL)
-        box.Add(top, 0, wx.EXPAND)
+        #box.Add(top, 0, wx.EXPAND)
         box.Add((0, 0), 1)
-
         img = qrcode.make(getLocalUrl())
         wximg=PilImageToWxImage(img) 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add((0,0),1)
-        hbox.Add(button,0,wx.ALIGN_BOTTOM)
-        hbox.Add(wx.StaticBitmap(panel, -1, wx.BitmapFromImage(wximg)))
-        box.Add(hbox, 0, wx.EXPAND)
+        #hbox = wx.BoxSizer(wx.HORIZONTAL)
+        #hbox.Add((0,0),1)
+        box.Add(wx.StaticBitmap(panel, -1, wx.BitmapFromImage(wximg)),0,wx.ALIGN_CENTER)
+        box.Add(button,0,wx.ALIGN_CENTER)
+        box.Add((0, 0), 1)
         panel.SetSizer(box)
 
         self.modelTimer = wx.Timer(self)

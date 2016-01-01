@@ -7,8 +7,9 @@ class KalaModel(Model):
         self.initEvent("mic")
         self.initEvent("cpuusage")
         self.micReady=True
-        args = shlex.split("alsaloop -C hw:1,0 -P hw:0,1 -t 10000")
-        self.micProcess = subprocess.Popen(args)
+        self.micProcess = None
+        #args = shlex.split("alsaloop -C hw:1,0 -P hw:0,1 -t 10000")
+        #self.micProcess = subprocess.Popen(args)
         args = shlex.split("python /home/pi/KalaOK/dlsong.py")
         self.dsProcess = subprocess.Popen(args)
         args = shlex.split("python /home/pi/KalaOK/playsong.py '%s'" % (win))

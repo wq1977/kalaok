@@ -28,8 +28,7 @@ def ctrlSong(opt):
         args = "killall omxplayer.bin"
     elif opt.startswith("volume"):
         volumn_music=int(opt.split("|")[1])
-        volumn_mic=int(opt.split("|")[2])
-        args = "/home/pi/KalaOK/dbuscontrol.sh volume %f;amixer -c 1 set Mic %s%%" % (float(volumn_music)/100,volumn_mic)
+        args = "/home/pi/KalaOK/dbuscontrol.sh volume %f;" % (float(volumn_music)/100)
     if args != None:
         print args
         os.system(args)

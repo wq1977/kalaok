@@ -59,9 +59,17 @@ def downloadSong(song):
     cnt=f.read()
     print cnt
     rsp=json.loads(cnt)
-    ext1 = rsp["mv"][rsp["mv"].rfind("."):]
-    ext3 = rsp["song"][rsp["song"].rfind("."):]
-    ext2 = rsp["music"][rsp["music"].rfind("."):]
+    try:
+        ext1 = rsp["mv"][rsp["mv"].rfind("."):]
+        ext3 = rsp["song"][rsp["song"].rfind("."):]
+        ext2 = rsp["music"][rsp["music"].rfind("."):]
+    except:
+        c=db.cursor()
+        c.execute("set names utf8")
+        c.execute("update orders set `status`=11, `progress`=0 where id=%d" % (song[0]))
+        c.close()
+        return
+        
     args = shlex.split('axel -a -o /tmp/mv'+ext1+' '+rsp["mv"]+" "+ " ".join(rsp["mv_list"]))
     mvproc = subprocess.Popen(args)
     args = shlex.split('axel -a -o /tmp/music'+ext2+' '+rsp["music"]+" "+ " ".join(rsp["music_list"]))
