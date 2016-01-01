@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import wx
 from classes.KalaModel import KalaModel 
 from classes.Model import Model
@@ -42,14 +43,18 @@ class TopPanel(wx.Panel):
     def __init__(self,parent):
         wx.Panel.__init__(self, parent, -1,
                          style=wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.SetBackgroundColour(wx.RED)
+        #self.SetBackgroundColour(wx.RED)
         self.SetAutoLayout(True)
         box = wx.BoxSizer(wx.HORIZONTAL)
-        self.status = wx.StaticText(self, -1, "This is an example of static text")
+        self.status = wx.StaticText(self, -1, "CPU:")
+        Model.regist(self.whenCpuUsageModel,"cpuusage")
         box.Add(self.status,0,wx.EXPAND)
         box.Add((0, 0), 1)
         box.Add(MicIndicator(self),0,wx.CENTER)
         self.SetSizer(box)
+
+    def whenCpuUsageModel(self):
+        self.status.SetLabel("CPU:%.2f" % (app.model.cpuUsage))
 
 def PilImageToWxImage( myPilImage ):
     myWxImage = wx.EmptyImage( myPilImage.size[0], myPilImage.size[1] )
@@ -62,11 +67,14 @@ import struct
 def getLocalUrl():
     ifname="wlan0"
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    ip= socket.inet_ntoa(fcntl.ioctl(
-        s.fileno(),
-        0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
-    )[20:24])
+    try:
+        ip= socket.inet_ntoa(fcntl.ioctl(
+            s.fileno(),
+            0x8915,  # SIOCGIFADDR
+            struct.pack('256s', ifname[:15])
+        )[20:24])
+    except:
+        ip="127.0.0.1"
     return "http://%s/kalaok/kalaok/web/" % (ip)
 
 class MyFrame(wx.Frame):
@@ -84,11 +92,11 @@ class MyFrame(wx.Frame):
         lc.bottom.SameAs(self, wx.Bottom, 50)
         lc.right.SameAs(self, wx.Right, 50)
         panel.SetConstraints(lc)
-        panel.SetBackgroundColour(wx.BLUE)
+        #panel.SetBackgroundColour(wx.BLUE)
 
         top = TopPanel(panel)
 
-        button = wx.Button(panel, 1003, "Close Me")
+        button = wx.Button(panel, 1003, getLocalUrl())
         self.Bind(wx.EVT_BUTTON, self.OnCloseMe, button)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
@@ -100,7 +108,7 @@ class MyFrame(wx.Frame):
         wximg=PilImageToWxImage(img) 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add((0,0),1)
-        hbox.Add(button,0,wx.EXPAND)
+        hbox.Add(button,0,wx.ALIGN_BOTTOM)
         hbox.Add(wx.StaticBitmap(panel, -1, wx.BitmapFromImage(wximg)))
         box.Add(hbox, 0, wx.EXPAND)
         panel.SetSizer(box)

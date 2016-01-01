@@ -20,6 +20,12 @@ atexit.register(savecounter)
 db=MySQLdb.connect(user="kalaok",passwd="kalaok",db="kalaok")
 db.autocommit(True)
 
+#all the old song should be treated as played or invalid
+c=db.cursor()
+c.execute("set names utf8")
+c.execute("update orders set `status`=10  where status!=2")
+c.close()
+
 def playSong(song):
     global mvproc
     global db
