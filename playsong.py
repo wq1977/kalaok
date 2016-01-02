@@ -52,6 +52,7 @@ def playSong(song):
         if r1!=None:
             break
         time.sleep(1)
+        os.system("xset s off")
     c=db.cursor()
     c.execute("set names utf8")
     c.execute("update orders set `status`=2, `progress`=0 where id=%d" % (song[0]))
