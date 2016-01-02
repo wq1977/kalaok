@@ -20,9 +20,11 @@ $html = file_get_contents($url);
 <?php
     $ret=json_decode($html, true);
 
-    foreach ($ret["songs"] as $idx => $song) {
-        mysql_query("INSERT IGNORE INTO `songs` SET `id` = $song[id],`name` = \"$song[name]\",`artist`=\"$song[artist]\",`imageurl`=\"$song[singer_image]\";");
-        echo ("<li><a href=\"order.php?songid=" .$song["id"]. "\" data-rel=\"dialog\" data-transition=\"pop\"><img src=\"". $song["singer_image"] ."\"><h2>" .$song["name"]. "</h2><p>" . $song["artist"] . "</p></a></li> ");
+    if (isset($ret["songs"])){
+        foreach ($ret["songs"] as $idx => $song) {
+            mysql_query("INSERT IGNORE INTO `songs` SET `id` = $song[id],`name` = \"$song[name]\",`artist`=\"$song[artist]\",`imageurl`=\"$song[singer_image]\";");
+            echo ("<li><a href=\"order.php?songid=" .$song["id"]. "\" data-rel=\"dialog\" data-transition=\"pop\"><img src=\"". $song["singer_image"] ."\"><h2>" .$song["name"]. "</h2><p>" . $song["artist"] . "</p></a></li> ");
+        }
     }
 ?>
 
@@ -32,7 +34,7 @@ $html = file_get_contents($url);
 
 }
 else{
-    $sql="select * from songs,(select distinct (which) from orders where `status`=2 order by `when` desc limit 10) as t1 where songs.id=t1.`which`";
+    $sql="select * from songs,(select distinct (which) from orders where `status`=2 order by `when` desc limit 30) as t1 where songs.id=t1.`which`";
     $ret=mysql_query($sql);
 ?>
 <ul data-role="listview" data-split-icon="gear" id="searchlist" data-split-theme="a" data-inset="true">
