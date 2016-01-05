@@ -5,11 +5,21 @@
 
 <?php
 include_once("db.php");
+function create_uuid($prefix = ""){    //可以指定前缀
+    $str = md5(uniqid(mt_rand(), true));   
+    $uuid  = substr($str,0,8) . '-';   
+    $uuid .= substr($str,8,4) . '-';   
+    $uuid .= substr($str,12,4) . '-';   
+    $uuid .= substr($str,16,4) . '-';   
+    $uuid .= substr($str,20,12);   
+    return $prefix . $uuid;
+}
 if (isset($_GET["artist"]) && strlen($_GET["artist"])>0){
 $value=trim($value);
 $GLOBAL_TYPE_PARAM = "d7bd83313b5b444";
 $GLOBAL_TIANLAI_KEY = "6ae993829ca5410e888f5e97b73ee4a810bb242149fd46ada5777edf587b4225";
-$request = base64_encode("{\"firstSize\":0,\"type\":2,\"common\":{\"clientversion\":\"3.3.9\",\"model\":\"sdk\",\"imei\":\"000000000000000\",\"userid\":0,\"resolution\":\"1196X720\",\"apiversion\":\"3.2.0\",\"product\":\"KALAOK\",\"clienttype\":\"Android\",\"nettype\":\"epc.tmobile.com\",\"updatechannel\":\"37\",\"login\":0,\"language\":1,\"imsi\":\"89014103211118510720\",\"systemversion\":\"17\",\"channel\":\"YYH\"},\"maxSize\":300,\"keyWord\":\"" . $value . "\"}");
+$rawr='{"common":{"talkdeviceid":"3e3fb9ac4463b26204698da6c2e737b36","uuid":"","reqkey":"'. create_uuid() .'","updatechannel":"2","apiversion":"3.2.0","devicetype":"Android","userid":0,"imei":"1eb4acb9813301ef","systemversion":"21","login":0,"clientversion":"3.3.9","nettype":"wifi","resolution":"720X1280","language":1,"clienttype":"Android","channel":"TLKG01","imsi":null,"model":"AppRuntimeforChromeDev","product":"KALAOK"},"maxSize":100,"firstSize":0,"type":2,"keyWord":"'.$value.'"}';
+$request = base64_encode($rawr);
 $sign=md5($request . $GLOBAL_TIANLAI_KEY);
 $url="http://sns.audiocn.org/tlcysns/content/search.action?request=" . $request . "&sign=" . $sign ."&type=". $GLOBAL_TYPE_PARAM;
 $html = file_get_contents($url);
