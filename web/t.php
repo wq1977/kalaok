@@ -12,8 +12,10 @@
     </head>
 <body>
 
+<?php $df = round(disk_free_space("/")/1024/1024,2); $dfdesc="${df}M free"; ?>
+
 <div data-role="page">
     <div data-role="header" data-position="fixed" data-theme="b">
-        <h1>欢迎你<span id="submittername"><?php if(isset($_COOKIE["name"])) echo "：$_COOKIE[name]"; ?></span></h1>
+        <h1>欢迎你<span id="submittername"><?php if(isset($_COOKIE["name"])) echo "：$_COOKIE[name]"; ?></span> <?php echo "<small>($dfdesc)</small>"; ?></h1>
     </div><!-- /header -->
     <div role="content">
